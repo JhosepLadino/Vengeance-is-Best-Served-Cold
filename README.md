@@ -21,6 +21,12 @@ Collision detection for the potion projectile, designed around a static C# event
 
 ---
 
+EnemyBehaviour.cs
+
+The core AI controller for the Knight Templar enemy. Manages three distinct behavioural states — patrol, chase, and attack — driven by a field-of-view detection system built with Physics.OverlapSphere and raycasting. The FOV check runs on a coroutine at 0.2s intervals rather than every frame, a deliberate performance decision to avoid the cost of continuous raycasting in Update. Detection accounts for both obstruction geometry and the bush hideout layer, so the player can break line-of-sight mid-chase. Navigation is handled through Unity's NavMesh with speed values that switch between patrol and chase states. FMOD spatial audio is integrated directly into the movement logic, so footstep sounds start, stop, and position correctly in 3D space based on the agent's actual movement state.
+
+---
+
 Potion.cs
 
 Coordinates the enemy destruction sequence triggered by a successful potion hit. Monitors the FoeDestruction flag from BombeKontakt each frame and, when conditions are met, runs a coroutine that positions an explosion particle system on the enemy's transform, deactivates the enemy, holds the explosion for a timed duration, then cleans up all charge state. The charge UI objects and the TouchOfDeath charge counter are reset here rather than in the individual scripts, centralising the end-of-sequence cleanup in one place.
